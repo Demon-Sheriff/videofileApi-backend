@@ -6,14 +6,50 @@ const fs = require('fs');
 
 // upload video
 const uploadVideo = async (filePath) => {
-
+    const ffprobe = promisify(ffmpeg.ffprobe); // Promisify the ffprobe function
     try {
-        const metadata = await ffmpeg.ffprobe(filePath);
-        return metadata.format.duration;
+        const metadata = await ffprobe(filePath);
+        return metadata.format.duration; // Return the duration
     } catch (err) {
-        throw err;
+        throw err; // Throw the error to be handled by the caller
     }
 };
+
+// trim video
+const trimVideo = async (filePath, start, end) => {
+    const outputPath = path.join('uploads', `trimmed-${Date.now()}.mp4`);
+
+    return new Promise((resolve, reject) => {
+        ffmpeg(filePath)
+            .setStartTime(start)
+            .setDuration(end - start)
+            .output(outputPath)
+            .on('end', () => resolve(outputPath))
+            .on('error', (err) => reject(err))
+            .run();
+    });
+};
+
+// merge video
+const mergeVideos = async (filePaths) => {
+    const outputPath = path.join('uploads', `merged-${Date.now()}.mp4`);
+
+    return new Promise((resolve, reject) => {
+        const ffmpegCommand = ffmpeg();
+
+        filePaths.forEach(filePath => {
+            ffmpegCommand.input(filePath);
+        });
+
+        ffmpegCommand
+            .mergeToFile(outputPath)
+            .on('end', () => resolve(outputPath))
+            .on('error', (err) => reject(err));
+    });
+};
+
+module.exports = { uploadVideo, trimVideo, mergeVideos };
+
 
 
 
