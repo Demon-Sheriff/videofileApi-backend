@@ -4,7 +4,7 @@ const ffmpeg = require('fluent-ffmpeg'); // for handling mulitmedia operations
 const path = require('path');
 const fs = require('fs');
 
-// upload video
+// upload video utility
 const uploadVideo = async (filePath) => {
     const ffprobe = promisify(ffmpeg.ffprobe); // Promisify the ffprobe function
     try {
@@ -15,7 +15,7 @@ const uploadVideo = async (filePath) => {
     }
 };
 
-// trim video
+// trim video utility
 const trimVideo = async (filePath, start, end) => {
     const outputPath = path.join('uploads', `trimmed-${Date.now()}.mp4`);
 
@@ -30,7 +30,7 @@ const trimVideo = async (filePath, start, end) => {
     });
 };
 
-// merge video
+// merge video utility
 const mergeVideos = async (filePaths) => {
     const outputPath = path.join('uploads', `merged-${Date.now()}.mp4`);
 
