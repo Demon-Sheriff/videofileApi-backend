@@ -1,0 +1,6 @@
+#ignore packages
+node_modules
+
+# ignore txt files
+text.txt
+
