@@ -4,10 +4,15 @@ const {Sequelize} = require('sequelize');
 // using sequelize as the DB
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: './db.sqlite3'
+    storage: './db.sqlite3',
+    logging: false,
 })
 
-sequelize.sync();
+sequelize.sync().then(() => {
+    console.log('Database synchronized');
+}).catch((err) => {
+    console.error('Error synchronizing database:', err);
+});
 
 const connectDB = async () => {
 
