@@ -1,19 +1,28 @@
 const Video = require('../models/videoModel'); // import the model
 const {Op} = require('sequelize');
-const { uploadVideo, trimVideo, mergeVideos } = require('../utils/videoUtils'); // import video utitlities.
+const { uploadVideoUtil, trimVideoUtil, mergeVideosUtil } = require('../utils/videoUtils'); // import video utitlities.
+const fs = require('fs');
 
 // upload video
 exports.uploadVideo = async (req, res) => {
 
     try {
-        const { title, description } = req.body;
-        const { filename, size, path } = req.file;
+
+        console.log(req.body);
+        const title = req.body.title;
+        const description = req.body.description;
+        const filePath = req.body.filePath;
+        // get the video file stats
+        const stats = fs.statSync(filePath)
+        // get the size of the video in bytes
+        const size = stats.size;
 
         if(size > 25 * 1024 * 1024) { // 25 MB limit
             return res.status(400).json({ error: 'File size exceeds the limit' });
         }
 
-        const duration = await uploadVideo(path); // use the uploadVideo utility function to get the duration
+        const duration = await uploadVideoUtil(filePath); // use the uploadVideo utility function to get the duration
+        console.log(duration);
 
         if(duration < 5 || duration > 300) { // 5 seconds to 5 minutes duration limit
             return res.status(400).json({ error: 'Video duration out of range' });
@@ -44,7 +53,7 @@ exports.trimVideo = async(req, res) => {
             return res.status(404).json({ error: 'Video not found' });
         }
 
-        const trimmedVideoPath = await trimVideo(video.filePath, start, end);
+        const trimmedVideoPath = await trimVideoUtil(video.filePath, start, end);
 
         res.status(200).json({ filePath: trimmedVideoPath });
     } 
@@ -66,7 +75,7 @@ exports.mergeVideos = async(req, res) => {
             return res.status(404).json({ error: 'Some videos not found' });
         }
 
-        const mergedVideoPath = await mergeVideos(videos.map(v => v.filePath));
+        const mergedVideoPath = await mergeVideosUtil(videos.map(v => v.filePath));
 
         res.status(200).json({ filePath: mergedVideoPath });
     } 
