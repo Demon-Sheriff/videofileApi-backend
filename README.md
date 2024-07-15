@@ -38,6 +38,17 @@ This project is a Node.js application for managing video operations, including u
 - **POST** `/video/merge`: Merge multiple videos.
 - **POST** `/video/generateLink`: Generate an expiring link for a video.
 ---
+### API Documentation
+- To view the API documentation, start the server
+  ```bash
+  nodemon app.js
+  ```
+- Open your web browser after starting the server
+- Navigate to swagger UI: Go to the following URL:
+  ```bash
+  http://localhost:3000/api-docs
+  ```
+---
 ### Additional Notes
 
 - Make sure to have **ffmpeg** installed on your system for video processing functionalities to work.
