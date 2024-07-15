@@ -11,4 +11,7 @@ router.post('/trim', videoController.trimVideo);
 router.post('/merge', videoController.mergeVideos);
 router.post('/generate-link', videoController.generateLink);
 
+// addding get requests to check the uploaded videos.
+router.get('/', videoController.getAllVideos);
+
 module.exports = router;

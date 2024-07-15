@@ -31,11 +31,12 @@ exports.uploadVideo = async (req, res) => {
         const video = await Video.create({
             title,
             description,
-            filePath: path,
+            filePath,
             duration,
         });
 
         res.status(201).json(video);
+        console.log("Video uploaded to database !")
     } 
     catch (error) {
         res.status(500).json({ error: error.message });
