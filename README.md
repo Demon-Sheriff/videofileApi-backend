@@ -46,7 +46,7 @@ This project is a Node.js application for managing video operations, including u
 - Open your web browser after starting the server
 - Navigate to swagger UI: Go to the following URL:
   ```bash
-  http://localhost:3000/api-docs
+  http://localhost:YOUR-SERVER-PORT/api-docs
   ```
 ---
 ### Additional Notes
