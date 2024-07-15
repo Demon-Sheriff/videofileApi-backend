@@ -112,7 +112,7 @@ exports.generateLink = async (req, res) =>{
 // get all videos
 exports.getAllVideos = async (req, res) => {
     try {
-        const videos = await Video.find();
+        const videos = await Video.findAll();
         res.json(videos);
     } catch (err) {
         res.status(500).json({ error: err.message });
